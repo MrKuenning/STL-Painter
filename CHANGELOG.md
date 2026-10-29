@@ -48,9 +48,9 @@ All notable changes and milestones for **STL Painter** are documented in this fi
 
 ### Branding & Visual Identity
 * **Custom Vector Logo & Favicon:**
-  * [`public/logo.svg`](file:///c:/Users/Brady/Projects/STL%20Painter/STL%20Painter%20-%20App1/public/logo.svg): High-resolution vector logomark with an isometric 3D mesh model, multi-color painted filament layers, wireframe mesh accents, and a stylized angled brush.
+  * [`public/logo.svg`](file:///c:/Users/Brady/Projects/STL%20Painter/STL%20Painter%20-%20App1/public/logo.svg): High-resolution vector logomark with an isometric 3D mesh model, multi-color painted filament layers, wireframe mesh accents, and a stylized angled brush. Added explicit `width="64"` and `height="64"` and removed restricted SVG `<filter>` tags for guaranteed cross-browser rendering in `<img>` tags.
   * [`public/favicon.svg`](file:///c:/Users/Brady/Projects/STL%20Painter/STL%20Painter%20-%20App1/public/favicon.svg): 32×32 high-contrast vector favicon linked in `<head>` for sharp browser tab display.
-* **Header Polish:** Embedded logomark in the brand header alongside a compact `3MF` badge pill and subtitle.
+* **Header Polish:** Embedded logomark in the brand header alongside a compact `3MF` badge pill and subtitle, with an automatic raster fallback (`logo-256.png`).
 
 ### Bambu Studio Profile Selector & Sync
 * **Printer & Nozzle Profile Dropdown:** Replaced binary checkbox with profile selection dropdown in Step 5:
