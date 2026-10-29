@@ -26,6 +26,8 @@ All notable changes and milestones for **STL Painter** are documented in this fi
   * Added a subtle ground shadow receiver on the build plate bed plane (`ShadowMaterial`, opacity 0.35) and enabled `castShadow` and `receiveShadow` on model geometry and painted surface layers.
   * Significantly enhances edge detection and vertical relief visualization on uneven surfaces (e.g. drop shadows from the tiers of the **Uneven** stepped pedestal, gradient shadowing in valleys of the **Wavy** relief, and ground contact shadows).
 * **Default Subdivision Detail:** Lowered default surface paint subdivision detail to **`0.10 mm`** (from `0.25 mm`) in both initial state and range slider for maximum edge sharpness.
+* **GitHub Repository Links:**
+  * Added direct repository links to [`https://github.com/MrKuenning/STL-Painter`](https://github.com/MrKuenning/STL-Painter) both at the bottom of the left sidebar and as a floating HUD pill in the bottom-right corner of the 3D viewport.
 * **Double-Vision Elimination & Seamless Editing in 3D Preview:**
   * When in preview mode (after clicking *"Preview on 3D Model"*), the floating flat 2D graphic quad automatically becomes invisible (`opacity: 0`), completely eliminating visual clutter and "double vision" over the 3D model.
   * The interactive cyan bounding box, 4 corner resize handles, rotation knob, and center move dot remain fully visible and active around the projected artwork.
