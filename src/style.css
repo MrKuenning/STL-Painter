@@ -292,18 +292,82 @@ html, body {
 .file-drop {
   border: 1px dashed #475569;
   border-radius: 8px;
-  padding: 10px;
+  padding: 10px 12px;
   text-align: center;
   font-size: 12px;
   color: var(--muted);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
+  display: block;
 }
 
 .file-drop:hover, .file-drop.dragover {
   border-color: var(--primary);
   background: rgba(59, 130, 246, 0.08);
   color: var(--text);
+}
+
+.drop-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  pointer-events: none;
+}
+
+.drop-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.drop-icon {
+  font-size: 14px;
+}
+
+.drop-name {
+  word-break: break-all;
+}
+
+.drop-dim {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 11px;
+}
+
+.drop-action {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.3;
+}
+
+.drop-action strong {
+  color: #cbd5e1;
+}
+
+.drop-formats {
+  font-size: 10px;
+  color: #64748b;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 1px;
+  transition: color 0.15s ease;
+}
+
+.file-drop:hover .drop-action {
+  color: #e2e8f0;
+}
+
+.file-drop:hover .drop-action strong,
+.file-drop:hover .drop-formats {
+  color: #38bdf8;
 }
 
 .meta-line {
@@ -330,6 +394,7 @@ html, body {
 }
 
 .quant-canvas-wrap {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -340,6 +405,22 @@ html, body {
   padding: 8px;
   min-height: 120px;
   box-sizing: border-box;
+}
+
+.canvas-dims-badge {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border);
+  color: #94a3b8;
+  font-size: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  line-height: 1.2;
 }
 
 #quantCanvas {

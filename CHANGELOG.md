@@ -21,6 +21,11 @@ All notable changes and milestones for **STL Painter** are documented in this fi
 * **Try Examples Panel (Symmetric 2×2 Layouts):**
   * Formatted both 3D Shapes and Graphic Images into clean, symmetric $2 \times 2$ responsive grids (`.preset-grid-2`) with `minmax(0, 1fr)` to prevent buttons from overflowing the sidebar.
   * Updated initial boot sequence and defaults: loads with **Flat** shape, **2 Color** graphic, and **Surface Paint** mode (`paint_color`).
+* **Informative File Upload Drop Zones:**
+  * Cleaned up the graphic upload box: moved image pixel dimensions out of the upload drop area into a neat badge overlay on the image preview canvas.
+  * Formatted the upload action and supported file formats (`PNG · JPG · SVG · WEBP`) onto dedicated, clean lines to prevent awkward word wrapping.
+  * Preserved the clean two-line layout for the STL model upload box (`.STL`).
+  * Added hover and drag-over micro-interactions highlighting accepted formats and action prompts.
 * **Directional Soft Shadows & Depth Perception:**
   * Enabled Three.js `PCFSoftShadowMap` with an angled directional key light (`dir1`, 2048×2048 map, normal bias compensation).
   * Added a subtle ground shadow receiver on the build plate bed plane (`ShadowMaterial`, opacity 0.35) and enabled `castShadow` and `receiveShadow` on model geometry and painted surface layers.

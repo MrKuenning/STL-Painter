@@ -142,6 +142,50 @@ function setStatus(msg, kind = '') {
   el.className = 'status-box' + (kind ? ' ' + kind : '');
 }
 
+function updateStlLabel(name) {
+  if (!$('stlLabel')) return;
+  if (name) {
+    $('stlLabel').innerHTML = `
+      <div class="drop-status">
+        <span class="drop-icon">📦</span>
+        <span class="drop-name">Loaded: <strong>${name}</strong></span>
+      </div>
+      <div class="drop-action">Click or drop a new <strong>.STL</strong> file to replace</div>
+    `;
+  } else {
+    $('stlLabel').innerHTML = `
+      <div class="drop-status">
+        <span class="drop-icon">📦</span>
+        <span>Drop <strong>.STL</strong> file here or click to browse</span>
+      </div>
+      <div class="drop-action">Upload custom 3D model (<strong>.stl</strong>)</div>
+    `;
+  }
+}
+
+function updateImgLabel(name) {
+  if (!$('imgLabel')) return;
+  if (name) {
+    $('imgLabel').innerHTML = `
+      <div class="drop-status">
+        <span class="drop-icon">🖼️</span>
+        <span class="drop-name">Loaded: <strong>${name}</strong></span>
+      </div>
+      <div class="drop-action">Click or drop a new image to replace</div>
+      <div class="drop-formats">PNG · JPG · SVG · WEBP</div>
+    `;
+  } else {
+    $('imgLabel').innerHTML = `
+      <div class="drop-status">
+        <span class="drop-icon">🖼️</span>
+        <span>Drop image here or click to browse</span>
+      </div>
+      <div class="drop-action">Click or drop a new image to replace</div>
+      <div class="drop-formats">PNG · JPG · SVG · WEBP</div>
+    `;
+  }
+}
+
 function rgbToHex({ r, g, b }) {
   return '#' + [r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('');
 }
@@ -463,7 +507,13 @@ async function decodeImageFile(fileOrStringOrBlob, labelName) {
       state.height = Math.round((state.width / state.aspect) * 10) / 10;
       $('decalHeight').value = state.height;
     }
-    $('imgLabel').innerHTML = `Loaded <strong>${labelName}</strong> (${width}×${height})`;
+    updateImgLabel(labelName);
+    if ($('imgDims')) {
+      const origW = img.naturalWidth || width;
+      const origH = img.naturalHeight || height;
+      $('imgDims').textContent = `${origW}×${origH}`;
+      $('imgDims').style.display = 'inline-block';
+    }
     if ($('badgeImage')) {
       $('badgeImage').textContent = labelName;
       $('badgeImage').classList.add('visible');
@@ -1028,7 +1078,7 @@ wireFileDrop($('stlDrop'), $('stlInput'), async (file) => {
   try {
     const buf = await file.arrayBuffer();
     const mesh = loadSTL(buf);
-    $('stlLabel').innerHTML = `Loaded <strong>${file.name}</strong>`;
+    updateStlLabel(file.name);
     document.querySelectorAll('[data-preset-model]').forEach((b) => b.classList.remove('active'));
     applyLoadedMesh(mesh, file.name);
     setStatus(`Loaded ${file.name}. Click on the model to position the logo.`);
@@ -1183,7 +1233,7 @@ async function selectSampleModel(modelKey) {
     b.classList.toggle('active', b.dataset.presetModel === modelKey);
   });
   const buf = modelDef.create();
-  $('stlLabel').innerHTML = `Loaded <strong>${modelDef.name}</strong>`;
+  updateStlLabel(modelDef.name);
   applyLoadedMesh(loadSTL(buf), modelDef.name);
   if (modelDef.defaultReach !== undefined && $('decalReach')) {
     state.reach = modelDef.defaultReach;

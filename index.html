@@ -103,7 +103,13 @@
         <div class="card-body">
           <label class="file-drop" id="stlDrop">
             <input type="file" id="stlInput" accept=".stl" hidden />
-            <span id="stlLabel">Drop an <strong>.stl</strong> file here or click to browse</span>
+            <div id="stlLabel" class="drop-content">
+              <div class="drop-status">
+                <span class="drop-icon">📦</span>
+                <span>Drop <strong>.STL</strong> file here or click to browse</span>
+              </div>
+              <div class="drop-action">Upload custom 3D model (<strong>.stl</strong>)</div>
+            </div>
           </label>
           <div id="stlStats" class="meta-line"></div>
           <div class="palette-header" style="margin-top: 4px;">
@@ -134,12 +140,20 @@
           <label class="file-drop" id="imgDrop">
             <input type="file" id="imgInput"
               accept="image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.svg,.webp" hidden />
-            <span id="imgLabel">Drop <strong>PNG / JPG / SVG</strong> here or click to browse</span>
+            <div id="imgLabel" class="drop-content">
+              <div class="drop-status">
+                <span class="drop-icon">🖼️</span>
+                <span>Drop image here or click to browse</span>
+              </div>
+              <div class="drop-action">Click or drop a new image to replace</div>
+              <div class="drop-formats">PNG · JPG · SVG · WEBP</div>
+            </div>
           </label>
 
           <!-- Full width image preview -->
           <div class="quant-canvas-wrap">
             <canvas id="quantCanvas" width="180" height="120"></canvas>
+            <span id="imgDims" class="canvas-dims-badge" style="display: none;"></span>
           </div>
 
           <!-- Controls under image: Flip -> Remove BG -> Colors -->
