@@ -1,3 +1,50 @@
+# Dependencies
+node_modules/
+
+# Production build outputs & caches
+dist/
+dist-ssr/
+.vite/
+
+# Test artifacts & logs
+tests
+tests/out/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Slicer & local test outputs
+result.json
+*.3mf
+*.gcode
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Local notes
+concept.txt
+
+
+
 # Logs
 logs
 *.log

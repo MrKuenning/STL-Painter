@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STL Painter — Image-to-3MF for Bambu Studio</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+
+<body>
+  <div id="app">
+    <!-- Left sidebar: Model & Image assets -->
+    <aside class="sidebar sidebar-left">
+      <header class="brand">
+        <div class="brand-row">
+          <img src="/logo.svg" alt="STL Painter Logo" class="brand-logo" width="38" height="38" />
+          <div>
+            <div class="brand-title-row">
+              <h1>STL Painter</h1>
+              <span class="brand-badge">3MF</span>
+            </div>
+            <p class="subtitle">Project an image onto an STL &amp; export for Bambu Studio</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Try Examples: 2 Models, 4 Images -->
+      <section class="card example-presets-card" id="cardExamples">
+        <div class="card-title" role="button" tabindex="0" title="Click to collapse / expand">
+          <div class="card-title-left">
+            <span class="step-icon">⚡</span>
+            <span class="card-title-text">Try Examples</span>
+          </div>
+          <span class="collapse-chevron">▾</span>
+        </div>
+        <div class="card-body">
+          <div class="preset-section">
+            <span class="preset-label">3D Shape</span>
+            <div class="preset-grid preset-grid-2">
+              <button type="button" class="btn btn-preset active" id="btnModelFlat" data-preset-model="flat"
+                title="Flat surface plate">
+                <span class="preset-glyph">⬛</span>
+                <span class="preset-name">Flat</span>
+              </button>
+              <button type="button" class="btn btn-preset" id="btnModelUneven" data-preset-model="stepped"
+                title="Multi-height stepped plate">
+                <span class="preset-glyph">🪜</span>
+                <span class="preset-name">Uneven</span>
+              </button>
+              <button type="button" class="btn btn-preset" id="btnModelCurved" data-preset-model="curved"
+                title="Prominent curved dome">
+                <span class="preset-glyph">⌒</span>
+                <span class="preset-name">Curved</span>
+              </button>
+              <button type="button" class="btn btn-preset" id="btnModelWavy" data-preset-model="wavy"
+                title="Undulating wave relief surface">
+                <span class="preset-glyph">〰️</span>
+                <span class="preset-name">Wavy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="preset-section">
+            <span class="preset-label">Graphic Image</span>
+            <div class="preset-btn-grid">
+              <button type="button" class="btn btn-preset" id="btnImg1Color" data-preset-img="transp"
+                title="1-color car on transparent background">
+                <span class="preset-glyph">🚗</span>
+                <span class="preset-name">1 Color</span>
+              </button>
+              <button type="button" class="btn btn-preset active" id="btnImg2Color" data-preset-img="2color"
+                title="Solid 2-color geometric graphic">
+                <span class="preset-glyph">🎨</span>
+                <span class="preset-name">2 Color</span>
+              </button>
+              <button type="button" class="btn btn-preset" id="btnImg4Color" data-preset-img="4color"
+                title="Vibrant 4-color retro sunset &amp; mountain badge">
+                <span class="preset-glyph">🌄</span>
+                <span class="preset-name">4 Color</span>
+              </button>
+              <button type="button" class="btn btn-preset" id="btnImgWhiteBg" data-preset-img="whitebg"
+                title="Image with solid white background to test 'Remove Background'">
+                <span class="preset-glyph">🛡️</span>
+                <span class="preset-name">Remove BG</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 1: Model -->
+      <section class="card" id="cardModel">
+        <div class="card-title" role="button" tabindex="0" title="Click to collapse / expand">
+          <div class="card-title-left">
+            <span class="step">1</span>
+            <span class="card-title-text">Model (STL)</span>
+            <span class="card-badge" id="badgeModel"></span>
+          </div>
+          <span class="collapse-chevron">▾</span>
+        </div>
+        <div class="card-body">
+          <label class="file-drop" id="stlDrop">
+            <input type="file" id="stlInput" accept=".stl" hidden />
+            <span id="stlLabel">Drop an <strong>.stl</strong> file here or click to browse</span>
+          </label>
+          <div id="stlStats" class="meta-line"></div>
+          <div class="palette-header" style="margin-top: 4px;">
+            <span>Base model</span>
+            <span>Bambu filament slot</span>
+          </div>
+          <div class="palette-row">
+            <div class="swatch-info">
+              <input type="color" id="baseSlotColor" value="#e2e8f0" title="Change preview color" />
+              <span>Base filament</span>
+            </div>
+            <select id="baseSlotSelect"></select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2: Image & Colors -->
+      <section class="card" id="cardImage">
+        <div class="card-title" role="button" tabindex="0" title="Click to collapse / expand">
+          <div class="card-title-left">
+            <span class="step">2</span>
+            <span class="card-title-text">Image &amp; Colors</span>
+            <span class="card-badge" id="badgeImage"></span>
+          </div>
+          <span class="collapse-chevron">▾</span>
+        </div>
+        <div class="card-body">
+          <label class="file-drop" id="imgDrop">
+            <input type="file" id="imgInput"
+              accept="image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.svg,.webp" hidden />
+            <span id="imgLabel">Drop <strong>PNG / JPG / SVG</strong> here or click to browse</span>
+          </label>
+
+          <!-- Full width image preview -->
+          <div class="quant-canvas-wrap">
+            <canvas id="quantCanvas" width="180" height="120"></canvas>
+          </div>
+
+          <!-- Controls under image: Flip -> Remove BG -> Colors -->
+          <div class="quant-controls">
+            <!-- 1. Flip horizontally -->
+            <label class="check">
+              <input type="checkbox" id="flipH" />
+              <span>Flip horizontally (for bottom faces)</span>
+            </label>
+
+            <!-- 2. Remove Background settings -->
+            <label class="check"
+              title="Detects solid borders on JPEGs/opaque PNGs and flood-fills inward so only the graphic is printed">
+              <input type="checkbox" id="removeBg" />
+              <span>Remove border background</span>
+            </label>
+            <label class="field" id="bgTolField" style="display: none;"
+              title="Color similarity threshold for removing background around border (useful for JPEG artifacts)">
+              <span>BG tolerance (<span id="bgTolVal">40</span>)</span>
+              <input type="range" id="bgTol" min="5" max="120" value="40" />
+            </label>
+
+            <!-- 3. Colors slider with colors listed below -->
+            <label class="field">
+              <span>Colors (<strong id="numColorsVal">2</strong>)</span>
+              <input type="range" id="numColors" min="1" max="7" value="2" />
+            </label>
+          </div>
+
+          <div class="palette-header">
+            <span>Detected color</span>
+            <span>Bambu filament slot</span>
+          </div>
+          <div id="paletteList" class="palette-list"></div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Center: 3D viewport -->
+    <main class="viewport-wrap">
+      <div id="viewport" class="viewport"></div>
+      <div class="hud-top">
+        <div class="hud-pill">
+          <strong>Drag decal</strong> to move &nbsp;·&nbsp;
+          <strong>Cyan handles</strong> to scale &nbsp;·&nbsp;
+          <strong>Orange knob</strong> to rotate (Shift = 15°) &nbsp;·&nbsp;
+          <strong>Right-drag</strong> to orbit
+        </div>
+        <label class="hud-toggle">
+          <input type="checkbox" id="showDecalHelper" checked />
+          <span>Show Resize Selector</span>
+        </label>
+        <label class="hud-toggle" title="Show or hide flat 2D graphic overlay">
+          <input type="checkbox" id="showDecalGraphic" checked />
+          <span>Flat Graphic</span>
+        </label>
+        <label class="hud-toggle">
+          <input type="checkbox" id="explodePreview" />
+          <span>Explode Split Parts</span>
+        </label>
+      </div>
+    </main>
+
+    <!-- Right sidebar: Positioning & Export -->
+    <aside class="sidebar sidebar-right">
+      <!-- Step 3: Position on Surface -->
+      <section class="card" id="cardPosition">
+        <div class="card-title" role="button" tabindex="0" title="Click to collapse / expand">
+          <div class="card-title-left">
+            <span class="step">3</span>
+            <span class="card-title-text">Position on Surface</span>
+            <span class="hint-pill">Drag decal to move</span>
+          </div>
+          <span class="collapse-chevron">▾</span>
+        </div>
+        <div class="card-body">
+          <!-- Group 1: Surface -->
+          <div class="control-group">
+            <span class="group-label">Surface</span>
+            <div class="face-btns">
+              <button class="btn btn-xs" data-face="0,0,1">Top (+Z)</button>
+              <button class="btn btn-xs" data-face="0,0,-1">Bottom (-Z)</button>
+              <button class="btn btn-xs" data-face="0,-1,0">Front (-Y)</button>
+              <button class="btn btn-xs" data-face="0,1,0">Back (+Y)</button>
+              <button class="btn btn-xs" data-face="-1,0,0">Left (-X)</button>
+              <button class="btn btn-xs" data-face="1,0,0">Right (+X)</button>
+            </div>
+            <label class="check">
+              <input type="checkbox" id="snapAxis" checked />
+              <span>Snap surface normal to nearest axis</span>
+            </label>
+          </div>
+
+          <!-- Group 2: Scale -->
+          <div class="control-group">
+            <span class="group-label">Scale</span>
+            <div class="grid-2">
+              <label class="field">
+                <span>Width (mm)</span>
+                <input type="number" id="decalWidth" step="0.5" min="1" value="30" />
+              </label>
+              <label class="field">
+                <span>Height (mm)</span>
+                <input type="number" id="decalHeight" step="0.5" min="1" value="20" />
+              </label>
+            </div>
+            <label class="check">
+              <input type="checkbox" id="lockAspect" checked />
+              <span>Lock aspect ratio</span>
+            </label>
+            <label class="field">
+              <span>Scale factor (<strong id="scaleVal">100%</strong>)</span>
+              <input type="range" id="decalScale" min="10" max="300" step="1" value="100" />
+            </label>
+          </div>
+
+          <!-- Group 3: Position -->
+          <div class="control-group">
+            <span class="group-label">Position</span>
+            <div class="center-btns">
+              <button id="btnCenterX" class="btn btn-xs btn-ghost"
+                title="Center image horizontally on model (keeps Y)">Center X</button>
+              <button id="btnCenterY" class="btn btn-xs btn-ghost"
+                title="Center image vertically on model (keeps X)">Center Y</button>
+              <button id="btnCenterBoth" class="btn btn-xs btn-ghost" title="Center image on both axes">Center
+                Both</button>
+            </div>
+            <label class="field">
+              <span>Rotation (<strong id="rotVal">0°</strong>)</span>
+              <input type="range" id="decalRot" min="-180" max="180" step="1" value="0" />
+            </label>
+          </div>
+
+          <!-- Group 4: Projection Mapping -->
+          <div class="control-group">
+            <span class="group-label">Projection Mapping</span>
+            <label class="field">
+              <span>Surface reach (±<strong id="reachVal">0.5</strong> mm from plane)</span>
+              <input type="range" id="decalReach" min="0.1" max="10" step="0.1" value="0.5" />
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4: Paint Depth & Mode -->
+      <section class="card" id="cardDepth">
+        <div class="card-title" role="button" tabindex="0" title="Click to collapse / expand">
+          <div class="card-title-left">
+            <span class="step">4</span>
+            <span class="card-title-text">Paint Depth &amp; Mode</span>
+          </div>
+          <span class="collapse-chevron">▾</span>
+        </div>
+        <div class="card-body">
+          <div class="mode-tabs" role="radiogroup">
+            <label class="mode-tab" id="tabSplit">
+              <input type="radio" name="exportMode" value="split" />
+              <div>
+                <strong>Geometry Split (Exact Depth)</strong>
+                <small>Cuts logo sub-parts N mm deep into the mesh. Exact layer depth in Bambu Studio.</small>
+              </div>
+            </label>
+            <label class="mode-tab active" id="tabPaint">
+              <input type="radio" name="exportMode" value="paint" checked />
+              <div>
+                <strong>Surface Paint (<code>paint_color</code>)</strong>
+                <small>Writes Bambu triangle-subdivision paint attributes. Editable with Bambu's paint brush.</small>
+              </div>
+            </label>
+          </div>
+
+          <div id="splitOptions" class="hidden">
+            <div class="grid-2">
+              <label class="field">
+                <span>Paint depth (mm)</span>
+                <input type="number" id="paintDepth" step="0.1" min="0.1" max="20" value="0.6" />
+              </label>
+              <label class="field">
+                <span>Layer height (mm)</span>
+                <input type="number" id="layerHeight" step="0.04" min="0.04" max="0.6" value="0.2" />
+              </label>
+            </div>
+            <div id="layerReadout" class="layer-readout">≈ <strong>3</strong> layers deep at 0.20 mm</div>
+          </div>
+
+          <div id="paintOptions">
+            <label class="field">
+              <span>Subdivision detail (<strong id="minEdgeVal">0.10</strong> mm min edge)</span>
+              <input type="range" id="minEdge" min="0.1" max="1.0" step="0.05" value="0.10" />
+            </label>
+          </div>
+
+          <button id="btnPaint" class="btn btn-primary" style="margin-top: 4px;">Preview on 3D Model</button>
+        </div>
+      </section>
+
+      <!-- Step 5: Export -->
+      <section class="card" id="cardExport">
+        <div class="card-title" role="button" tabindex="0" title="Click to collapse / expand">
+          <div class="card-title-left">
+            <span class="step">5</span>
+            <span class="card-title-text">Export</span>
+          </div>
+          <span class="collapse-chevron">▾</span>
+        </div>
+        <div class="card-body">
+          <label class="field">
+            <span>Select Profile</span>
+            <select id="profileSelect">
+              <option value="a1_04_pei" selected>Bambu A1 (0.4mm) · Textured PEI</option>
+              <option value="a1_02_pei">Bambu A1 (0.2mm) · Textured PEI</option>
+              <option value="none">None (Geometry only)</option>
+            </select>
+          </label>
+
+          <button id="btnExport" class="btn btn-accent">Export .3MF for Bambu Studio</button>
+          <div id="statusBox" class="status-box"></div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

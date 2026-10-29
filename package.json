@@ -1,0 +1,21 @@
+{
+  "name": "stl-painter",
+  "private": true,
+  "version": "0.3.0",
+  "description": "Project an image onto an STL and export a multi-color 3MF for Bambu Studio",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node tests/run-tests.mjs"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "manifold-3d": "^3.5.4",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}

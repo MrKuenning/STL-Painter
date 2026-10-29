@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+
+    <!-- Border Glow -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
+    <!-- Brush Shading -->
+    <linearGradient id="brushBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <linearGradient id="ferrule" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+
+    <!-- Rainbow Paint Swath -->
+    <linearGradient id="paintRainbow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="35%" stop-color="#10b981"/>
+      <stop offset="70%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- App Rounded Icon Container -->
+  <rect x="2.5" y="2.5" width="59" height="59" rx="14" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="2"/>
+
+  <!-- 3D Isometric STL Base Box -->
+  <g filter="url(#shadow)">
+    <!-- Bottom Base Mesh (Dark Slate) -->
+    <!-- Left Face -->
+    <path d="M13 29 L32 40 L32 51 L13 40 Z" fill="#243044"/>
+    <!-- Right Face -->
+    <path d="M32 40 L51 29 L51 40 L32 51 Z" fill="#151d2a"/>
+    <!-- Top Face of Base -->
+    <path d="M32 18 L51 29 L32 40 L13 29 Z" fill="#334155"/>
+
+    <!-- Mesh Wireframe Accent Lines on Left & Right faces -->
+    <path d="M13 29 L32 51 M32 40 L13 40" stroke="#3b82f6" stroke-width="0.75" stroke-opacity="0.3"/>
+    <path d="M51 29 L32 51 M32 40 L51 40" stroke="#10b981" stroke-width="0.75" stroke-opacity="0.3"/>
+
+    <!-- Painted Layers on the Top Facet -->
+    <!-- Stripe 1: Cyan / Blue -->
+    <path d="M17 28.5 L24.5 24 L30.5 27.5 L23 32 Z" fill="#3b82f6"/>
+    <!-- Stripe 2: Bambu Emerald Green -->
+    <path d="M23 32 L30.5 27.5 L36.5 31 L29 35.5 Z" fill="#10b981"/>
+    <!-- Stripe 3: Warm Amber / Orange -->
+    <path d="M29 35.5 L36.5 31 L42.5 34.5 L35 39 Z" fill="#f59e0b"/>
+    <!-- Stripe 4: Rose / Pink Accent -->
+    <path d="M24.5 24 L32 19.5 L38 23 L30.5 27.5 Z" fill="#ec4899"/>
+
+    <!-- Curved glossy paint arc across surface -->
+    <path d="M18 31 C 25 36, 38 34, 45 27" stroke="url(#paintRainbow)" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.95"/>
+    <path d="M18 31 C 25 36, 38 34, 45 27" stroke="#ffffff" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+    <!-- Stylized Angled Paintbrush / Extruder Stylus -->
+    <g transform="translate(1, -2)">
+      <!-- Brush Handle -->
+      <path d="M54 7 L58 11 L44 25 L40 21 Z" fill="url(#brushBody)"/>
+      <path d="M54 7 L58 11 L56 13 L52 9 Z" fill="#e2e8f0"/>
+      <!-- Ferrule (Metal Collar) -->
+      <path d="M44 25 L40 21 L37 24 L41 28 Z" fill="url(#ferrule)"/>
+      <!-- Tip / Bristles (Emerald Paint) -->
+      <path d="M37 24 L41 28 L35 32 L33 30 Z" fill="#10b981"/>
+      <path d="M35 32 L33 30 L31 33 Z" fill="#34d399"/>
+      <!-- Fresh paint drip / bead -->
+      <circle cx="31" cy="34" r="1.8" fill="#10b981"/>
+      <circle cx="31" cy="34" r="0.8" fill="#a7f3d0"/>
+    </g>
+  </g>
+</svg>
+
