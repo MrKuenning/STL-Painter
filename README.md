@@ -2,6 +2,9 @@
 
 A browser-based, client-side tool to project 2D images, logos, and graphics directly onto 3D STL meshes and export native, multi-color **.3MF** files ready for Bambu Studio and Bambu Lab 3D printers.
 
+### 🌐 Try It Online
+**No installation required:** Launch and use the app directly in your browser at **[https://stl-painter.onrender.com](https://stl-painter.onrender.com/)**
+
 ---
 
 ## Key Features
